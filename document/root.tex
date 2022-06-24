@@ -1,0 +1,52 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{isabelle,isabellesym, pifont}
+
+% further packages required for unusual symbols (see also
+% isabellesym.sty), use only when needed
+
+\usepackage{amssymb}
+  %\<currency>
+
+% this should be the last package used
+\usepackage{pdfsetup}
+%\usepackage{url}
+
+% urls in roman style, theory text in math-similar italics
+\urlstyle{rm}
+\isabellestyle{it}
+
+% for uniform font size
+%\renewcommand{\isastyle}{\isastyleminor}
+%\renewcommand{\isasymcheckmark}{CHECK}
+
+\begin{document}
+
+\title{Abstraction Logic in Isabelle/HOL}
+\author{Steven Obua}
+\maketitle
+
+\begin{abstract}
+  This is work in progress. Its ultimate goal is the formalisation in Isabelle/HOL of Abstraction Logic and its properties as 
+  described in \cite{Obua-pal.2} and \cite{Obua-abstraction.logic.2}.
+\end{abstract}
+
+\tableofcontents
+
+\newpage
+
+% sane default for proof documents
+\parindent 0pt\parskip 0.5ex
+
+% generated text of all theories
+\input{session}
+
+% optional bibliography
+\bibliographystyle{abbrv}
+\bibliography{root}
+
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:

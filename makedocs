@@ -1,0 +1,1 @@
+/Applications/Isabelle2021-1.app/bin/isabelle document -P pdf -d . AbstractionLogic
