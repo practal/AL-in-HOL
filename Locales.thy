@@ -55,6 +55,9 @@ lemma wf_AbsApp_valence: assumes wf: "wf (AbsApp a xs ts)" shows "length xs = \<
 lemma shape_deps_upper_bound: "\<checkmark>a \<Longrightarrow> i < \<section>a a \<Longrightarrow> a!\<natural>i \<subseteq> nats (\<section>v a)"
   using preshape_valence shape_deps_in_alldeps by auto
 
+lemma finite_shape_deps: "\<checkmark>a \<Longrightarrow> i < \<section>a a \<Longrightarrow> finite(a!\<natural>i)"
+  by (meson finite_nats finite_subset sigloc.shape_deps_upper_bound)
+
 lemma length_boundvars_at:
   assumes wf: "wf (AbsApp a xs ts)"
   assumes i: "i < length ts" 

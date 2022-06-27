@@ -128,12 +128,8 @@ abbreviation Valuations :: "variables \<Rightarrow> 'a valuation quotient" ("\<b
 
 fun eval :: "nterm \<Rightarrow> 'a valuation \<Rightarrow> 'a" ("\<langle>_; _\<rangle>") where
   "eval (VarApp x ts) \<upsilon> = \<upsilon> (x, length ts) (\<section>map t = ts!_. eval t \<upsilon>)"
-| "eval (AbsApp a xs ts) \<upsilon> = 
-    (let op = \<O> !! a in
-     let rs = (\<section>map t = ts!i. 
-       let bs = a!@i(xs) in 
-       (\<lambda> us. (let \<upsilon>' = \<upsilon> {bs := us} in eval t \<upsilon>'))) 
-     in op rs)"
+| "eval (AbsApp a xs ts) \<upsilon> = (\<O> !! a) (\<section>map t = ts!i. 
+       (\<lambda> us. eval t (\<upsilon> { a!@i(xs) := us })))"
 
 lemma eval_modulo:
   "wf t \<Longrightarrow> 

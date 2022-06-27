@@ -122,6 +122,59 @@ lemma shift_index_applied_twice[simp]:
 lemma shift_index_unindexed[simp]: "shift_index d (\<lambda> i. F) = (\<lambda> i. F)"
   by (auto simp add: shift_index_def)
 
+definition sorted_list :: "nat set \<Rightarrow> nat list"
+  where "sorted_list js = (THE l. sorted l \<and> distinct l \<and> set l = js)"
+
+lemma set_sorted_list: "finite js \<Longrightarrow> set (sorted_list js) = js" 
+  apply (simp add: sorted_list_def)
+  using finite_sorted_distinct_unique
+  by (smt (verit, del_insts) the_equality)
+
+lemma sorted_sorted_list: "finite js \<Longrightarrow> sorted (sorted_list js)"
+  apply (simp add: sorted_list_def)
+  using finite_sorted_distinct_unique
+  by (smt (verit, del_insts) the_equality)
+
+lemma distinct_sorted_list: "finite js \<Longrightarrow> distinct (sorted_list js)"
+  apply (simp add: sorted_list_def)
+  using finite_sorted_distinct_unique
+  by (smt (verit, del_insts) the_equality)
+
+lemma sorted_list_intro: "sorted l \<and> distinct l \<and> set l = js \<Longrightarrow> sorted_list js = l"
+  by (meson List.finite_set distinct_sorted_list set_sorted_list sorted_distinct_set_unique 
+      sorted_sorted_list)
+
+lemma sorted_list_nats: "sorted_list (nats n) = [0 ..< n]"
+  using atLeast_upt distinct_upt nats_def sorted_list_intro sorted_upt by presburger
+
+lemma no_index_sorted_list: 
+  assumes finite: "finite js"
+  assumes j: "j \<notin> js"
+  shows "index_of j (sorted_list js) = None"
+proof -
+  {
+    fix i :: nat
+    assume "index_of j (sorted_list js) = Some i"
+    then have "j \<in> js"
+      by (metis index_of_is_Some local.finite nth_mem set_sorted_list)
+  }
+  then show ?thesis using j by fastforce
+qed
+
+lemma index_sorted_list:
+  assumes finite: "finite js"
+  assumes j: "j \<in> js"
+  shows "\<exists> i. index_of j (sorted_list js) = Some i"
+  by (simp add: index_of_exists j local.finite set_sorted_list)
+
+lemma upper_bound_index_sorted_list: 
+  assumes finite: "finite js"
+  assumes j: "j \<in> js"
+  shows "the (index_of j (sorted_list js)) < card js"
+  by (smt (verit, best) distinct_sorted_list index_of_is_None index_of_is_Some j 
+      local.finite option.exhaust_sel set_sorted_list sorted_list_of_set.idem_if_sorted_distinct 
+      sorted_list_of_set_unique sorted_sorted_list)
+
 subsubsection \<open>Indexed Quantification\<close>
 
 definition list_indexed_forall :: "'a list \<Rightarrow> (nat \<Rightarrow> 'a \<Rightarrow> bool) \<Rightarrow> bool" where
